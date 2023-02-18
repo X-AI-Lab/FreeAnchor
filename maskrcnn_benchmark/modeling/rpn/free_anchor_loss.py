@@ -65,7 +65,7 @@ class FreeAnchorLossComputation(object):
             objectness_loss (Tensor)
             box_loss (Tensor
         """
-        anchors = [cat_boxlist(anchors_per_image) for anchors_per_image in anchors]
+        anchors = [cat_boxlist(anchors_per_image) for anchors_per_image in anchors] # Combine the anchors of all lvls for every img in batch
         box_cls_flattened = []
         box_regression_flattened = []
         # for each feature level, permute the outputs to make them be in the
@@ -95,7 +95,7 @@ class FreeAnchorLossComputation(object):
         box_prob = []
         positive_numels = 0
         positive_losses = []
-        for img, (anchors_, targets_, cls_prob_, box_regression_) in enumerate(
+        for img_id_, (anchors_, targets_, cls_prob_, box_regression_) in enumerate( # for each img in Batch
                 zip(anchors, targets, cls_prob, box_regression)
         ):
             labels_ = targets_.get_field("labels") - 1
@@ -118,10 +118,10 @@ class FreeAnchorLossComputation(object):
                     (object_box_iou - t1) / (t2 - t1)
                 ).clamp(min=0, max=1)
 
-                indices = torch.stack([torch.arange(len(labels_)).type_as(labels_), labels_], dim=0)
+                indices = torch.stack([torch.arange(len(labels_)).type_as(labels_), labels_], dim=0) # 最匹配的几个 Anchor 的索引
 
                 # object_cls_box_prob: P{a_{j} -> b_{i}}, shape: [i, c, j]
-                object_cls_box_prob = torch.sparse_coo_tensor(indices, object_box_prob)
+                object_cls_box_prob = torch.sparse_coo_tensor(indices, object_box_prob) # size: None, 默认是生成足以覆盖所有非零值的最小矩阵
 
                 # image_box_prob: P{a_{j} \in A_{+}}, shape: [j, c]
                 """
@@ -131,7 +131,7 @@ class FreeAnchorLossComputation(object):
                 
                 """
                 # start
-                indices = torch.nonzero(torch.sparse.sum(
+                indices = torch.nonzero(torch.sparse.sum(  # `torch.nonzero` return nonzero index
                     object_cls_box_prob, dim=0
                 ).to_dense()).t_()
 

@@ -9,8 +9,8 @@ from torch import nn
 from maskrcnn_benchmark.structures.image_list import to_image_list
 
 from ..backbone import build_backbone
-from ..rpn.rpn import build_rpn
-from ..rpn.retinanet import build_retinanet
+from ..rpn.rpn import RPNModule
+from ..rpn.retinanet import RetinaNetModule
 from ..roi_heads.roi_heads import build_roi_heads
 
 
@@ -29,9 +29,9 @@ class GeneralizedRCNN(nn.Module):
 
         self.backbone = build_backbone(cfg)
         if not cfg.RETINANET.RETINANET_ON:
-            self.rpn = build_rpn(cfg)
+            self.rpn = RPNModule(cfg)
         else:
-            self.rpn = build_retinanet(cfg)
+            self.rpn = RetinaNetModule(cfg)
         self.roi_heads = build_roi_heads(cfg)
 
     def forward(self, images, targets=None):

@@ -6,7 +6,7 @@ Implements the Generalized R-CNN framework
 from torch import nn
 from maskrcnn_benchmark.structures.image_list import to_image_list
 from ..backbone import build_backbone
-from ..rpn.retinanet import build_retinanet
+from ..rpn.retinanet import RetinaNetModule
 import copy
 
 
@@ -23,7 +23,7 @@ class RetinaNet(nn.Module):
         super(RetinaNet, self).__init__()
         self.cfg = copy.deepcopy(cfg)
         self.backbone = build_backbone(cfg)
-        self.rpn = build_retinanet(cfg)
+        self.rpn = RetinaNetModule(cfg)
 
     def forward(self, images, targets=None):
         """
