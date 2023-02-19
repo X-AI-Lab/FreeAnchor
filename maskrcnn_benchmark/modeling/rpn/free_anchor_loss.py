@@ -131,9 +131,12 @@ class FreeAnchorLossComputation(object):
                 
                 """
                 # start
-                indices = torch.nonzero(torch.sparse.sum(  # `torch.nonzero` return nonzero index
-                    object_cls_box_prob, dim=0
-                ).to_dense()).t_()
+                indices = torch.nonzero(
+                    torch.sparse.sum(  # `torch.nonzero` return nonzero index
+                        object_cls_box_prob, dim=0
+                    ).to_dense(),
+                    as_tuple=False,
+                ).t_()
 
                 if indices.numel() == 0:
                     image_box_prob = torch.zeros(anchors_.bbox.size(0), self.num_classes).type_as(object_box_prob)

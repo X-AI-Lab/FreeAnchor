@@ -22,7 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
     parser.add_argument(
         "--config-file",
-        default="configs/free_anchor_R-50-FPN_8gpu_1x.yaml",
+        default="configs/free_anchor_R-50-FPN_1x.yaml",
         metavar="FILE",
         help="path to config file",
     )
@@ -79,7 +79,7 @@ def main():
             model,
             data_loader_val,
             iou_types=iou_types,
-            #box_only=cfg.MODEL.RPN_ONLY,
+            # box_only=cfg.MODEL.RPN_ONLY,
             box_only=False if cfg.RETINANET.RETINANET_ON else cfg.MODEL.RPN_ONLY,
             device=cfg.MODEL.DEVICE,
             expected_results=cfg.TEST.EXPECTED_RESULTS,

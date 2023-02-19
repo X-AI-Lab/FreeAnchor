@@ -110,7 +110,7 @@ class PostProcessor(nn.Module):
         inds_all = scores > self.score_thresh
         no_background = int(self.free_anchor)
         for j in range(1 - no_background, num_classes - no_background):
-            inds = inds_all[:, j].nonzero().squeeze(1)
+            inds = inds_all[:, j].nonzero(as_tuple=False).squeeze(1)
             scores_j = scores[inds, j]
             boxes_j = boxes[inds, j * 4 : (j + 1) * 4]
             boxlist_for_class = BoxList(boxes_j, boxlist.size, mode="xyxy")
@@ -134,7 +134,7 @@ class PostProcessor(nn.Module):
                 cls_scores.cpu(), number_of_detections - self.detections_per_img + 1
             )
             keep = cls_scores >= image_thresh.item()
-            keep = torch.nonzero(keep).squeeze(1)
+            keep = torch.nonzero(keep, as_tuple=False).squeeze(1)
             result = result[keep]
         return result
 

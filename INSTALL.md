@@ -2,8 +2,8 @@
 
 ### Requirements:
 - Python3
-- PyTorch 1.1 with CUDA support
-- torchvision 0.2.1
+- PyTorch 1.7 with CUDA support
+- torchvision 0.8.2
 - pycocotools
 - yacs
 - matplotlib
@@ -22,20 +22,19 @@ conda create --name free_anchor python=3.7
 conda activate free_anchor
 
 # this installs the right pip and dependencies for the fresh python
-conda install ipython
+pip install ipython -i https://mirror.baidu.com/pypi/simple
 
 # maskrnn_benchmark and coco api dependencies
-pip install ninja yacs cython matplotlib tqdm
+pip install ninja yacs cython matplotlib tqdm -i https://mirror.baidu.com/pypi/simple
 
 # pytorch and torchvision
-# we give the instructions for CUDA 10.0
-conda install pytorch=1.1 torchvision=0.2.1 cudatoolkit=10.0 -c pytorch
+pip install pytorch=1.7 torchvision=0.8.2 -i https://mirror.baidu.com/pypi/simple
 
 # install pycocotools
-pip install pycocotools
+pip install pycocotools -i https://mirror.baidu.com/pypi/simple
 
 # install FreeAnchor
-git clone https://github.com/zhangxiaosong18/FreeAnchor.git
+git clone https://github.com/X-AI-Lab/FreeAnchor.git
 
 # the following will install the lib with
 # symbolic links, so that you can modify

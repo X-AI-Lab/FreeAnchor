@@ -5,3 +5,5 @@
 build
 *.egg-info/
 .vscode
+ckpt/*.pth
+outputs/*
